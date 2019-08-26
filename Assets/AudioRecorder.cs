@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace GoogleCloudSpeechApiController
+namespace SpeechToText
 {
-    public class Recorder
+    public class AudioRecorder
     {
         public AudioClip RecordingClip { get; private set; }
         private float[] _recodingClipData;
@@ -25,10 +25,13 @@ namespace GoogleCloudSpeechApiController
         {
             while (Microphone.IsRecording(null))
             {
+                // 1秒を超えないように
+                await Task.Delay(100);
+
                 var position = Microphone.GetPosition(null);
                 if (position < 0)
                 {
-                    return;
+                    continue;
                 }
 
                 RecordingClip.GetData(_recodingClipData, 0);
@@ -44,9 +47,6 @@ namespace GoogleCloudSpeechApiController
                 AddClipData(_prevPosition, position);
 
                 _prevPosition = position;
-
-                // 1秒を超えないように
-                await Task.Delay(100);
             }
         }
 

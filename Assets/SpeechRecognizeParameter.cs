@@ -1,6 +1,6 @@
 using System;
 
-namespace GoogleCloudSpeechApiController
+namespace SpeechToText
 {
     /// <summary>
     /// https://cloud.google.com/speech-to-text/docs/reference/rest/v1p1beta1/speech/recognize
@@ -9,9 +9,9 @@ namespace GoogleCloudSpeechApiController
     [Serializable]
     public class SpeechRecognizeParameter
     {
-        public RecognitionConfig config;
-        public RecognitionAudio audio;
-        public string name;
+        public RecognitionConfig config = new RecognitionConfig();
+        public RecognitionAudio audio = new RecognitionAudio();
+        //public string name;
     }
 
     [Serializable]
@@ -21,13 +21,13 @@ namespace GoogleCloudSpeechApiController
         public int sampleRateHertz;
         public int audioChannelCount;
         public bool enableSeparateRecognitionPerChannel;
-        public string languageCode;
+        public string languageCode = "ja-JP";
         public int maxAlternatives;
         public bool profanityFilter;
-        public SpeechContext[] speechContexts;
+        public SpeechContext[] speechContexts = new SpeechContext[0];
         public bool enableWordTimeOffsets;
         public bool enableAutomaticPunctuation;
-        public RecognitionMetadata metadata;
+        public RecognitionMetadata metadata = new RecognitionMetadata();
         public string model;
         public bool useEnhanced;
     }
@@ -36,7 +36,7 @@ namespace GoogleCloudSpeechApiController
     public class RecognitionAudio
     {
         public string content;
-        public string uri;
+        //public string uri;
     }
 
     public enum AudioEncoding
@@ -102,11 +102,10 @@ namespace GoogleCloudSpeechApiController
         public InteractionType interactionType;
         public uint industryNaicsCodeOfAudio;
         public MicrophoneDistance microphoneDistance;
-        public OriginalMediaType originalMediaType;
-        public RecordingDeviceType recordingDeviceType;
+        public OriginalMediaType originalMediaType = OriginalMediaType.AUDIO;
+        public RecordingDeviceType recordingDeviceType = RecordingDeviceType.PC;
         public string recordingDeviceName;
         public string originalMimeType;
-        public string obfuscatedId;
         public string audioTopic;
     }
 }
