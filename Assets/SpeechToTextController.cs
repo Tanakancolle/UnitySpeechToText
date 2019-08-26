@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -31,17 +31,13 @@ namespace SpeechToText
 
         public void RecordEnd()
         {
-            var dataList = _audioRecorder.End();
-
-            var clip = AudioClip.Create("Record Clip", dataList.Count, _audioRecorder.RecordingClip.channels, _audioRecorder.RecordingClip.frequency, false);
-            var data = dataList.ToArray();
+            var data = _audioRecorder.End();
+            var clip = AudioClip.Create("Record Clip", data.Length, _audioRecorder.RecordingClip.channels, _audioRecorder.RecordingClip.frequency, false);
             clip.SetData(data, 0);
             _audioSource.clip = clip;
-
             Debug.Log("Clip Length : " + clip.length);
 
-            SettingParameter(clip, data);
-
+            SettingParameter(clip);
             SendApi();
         }
 
@@ -52,19 +48,14 @@ namespace SpeechToText
             Debug.Log("Play Clip");
         }
 
-        private void SettingParameter(AudioClip clip, float[] audioData)
+        private void SettingParameter(AudioClip clip)
         {
             _parameter.config.sampleRateHertz = clip.frequency;
             _parameter.config.audioChannelCount = clip.channels;
+            var bytes = AudioConverter.CreateLinear16(clip);
+            _parameter.audio.content = Convert.ToBase64String(bytes);
 
-            // TODO : Covert Liner16 Format
-            var byteList = new List<byte>();
-            foreach (var data in audioData)
-            {
-                byteList.AddRange(BitConverter.GetBytes(data));
-            }
-
-            _parameter.audio.content = Convert.ToBase64String(byteList.ToArray());
+            File.WriteAllBytes("test.wav", bytes);
         }
 
         private void SendApi()

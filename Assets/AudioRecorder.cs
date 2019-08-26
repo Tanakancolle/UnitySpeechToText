@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -10,6 +11,7 @@ namespace SpeechToText
         private float[] _recodingClipData;
         private int _prevPosition;
         private readonly List<float> _recordDataList = new List<float>();
+        private bool _isRecording = false;
 
         public void Start(int frequency)
         {
@@ -18,15 +20,16 @@ namespace SpeechToText
             _recodingClipData = new float[RecordingClip.samples * RecordingClip.channels];
 
             Debug.Log("Record Start");
-            Update();
+            Recording();
         }
 
-        private async void Update()
+        private async void Recording()
         {
-            while (Microphone.IsRecording(null))
+            _isRecording = true;
+            while (_isRecording)
             {
                 // 1秒を超えないように
-                await Task.Delay(100);
+                await Task.Delay(1000 / 30);
 
                 var position = Microphone.GetPosition(null);
                 if (position < 0)
@@ -58,11 +61,11 @@ namespace SpeechToText
             }
         }
 
-        public List<float> End()
+        public float[] End()
         {
-            Debug.Log("Record End");
+            _isRecording = false;
             Microphone.End(null);
-            return _recordDataList;
+            return _recordDataList.ToArray();
         }
     }
 }
