@@ -26,7 +26,7 @@ namespace SpeechToText
         public void RecordStart()
         {
             _audioRecorder = new AudioRecorder();
-            _audioRecorder.Start(44100);
+            _audioRecorder.Start(16000);
         }
 
         public void RecordEnd()
@@ -50,12 +50,11 @@ namespace SpeechToText
 
         private void SettingParameter(AudioClip clip)
         {
+            _parameter.config.SetLanguageCode(LanguageCodeType.ja_JP);
             _parameter.config.sampleRateHertz = clip.frequency;
             _parameter.config.audioChannelCount = clip.channels;
             var bytes = AudioConverter.CreateLinear16(clip);
             _parameter.audio.content = Convert.ToBase64String(bytes);
-
-            File.WriteAllBytes("test.wav", bytes);
         }
 
         private void SendApi()
@@ -71,7 +70,7 @@ namespace SpeechToText
             request.SetRequestHeader("Content-Type", "application/json");
             yield return request.Send();
 
-            Debug.LogWarning(request.downloadHandler.text);
+            Debug.Log("Result : " + request.downloadHandler.text);
         }
     }
 }

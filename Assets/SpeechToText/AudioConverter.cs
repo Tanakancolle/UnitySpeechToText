@@ -95,7 +95,7 @@ namespace SpeechToText
             foreach (var sample in samples)
             {
                 // Sample = -1 ~ 1 to Linear16 = -32767(8) ~ 32767
-                stream.Write(BitConverter.GetBytes(sample * Linear16Range), 0, 2);
+                stream.Write(BitConverter.GetBytes((short)(sample * Linear16Range)), 0, 2);
             }
         }
     }
