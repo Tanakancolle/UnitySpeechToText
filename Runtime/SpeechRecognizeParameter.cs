@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace SpeechToText
 {
@@ -10,6 +11,8 @@ namespace SpeechToText
     public class SpeechRecognizeParameter
     {
         public RecognitionConfig config = new RecognitionConfig();
+
+        [HideInInspector]
         public RecognitionAudio audio = new RecognitionAudio();
 //        public string name;
     }
@@ -17,10 +20,18 @@ namespace SpeechToText
     [Serializable]
     public class RecognitionConfig
     {
+        [HideInInspector]
         public AudioEncoding encoding = AudioEncoding.LINEAR16;
+
+        [HideInInspector]
         public int sampleRateHertz;
+
+        [HideInInspector]
         public int audioChannelCount;
+
         public bool enableSeparateRecognitionPerChannel;
+
+        [HideInInspector]
         public string languageCode;
         public int maxAlternatives;
         public bool profanityFilter;
@@ -239,5 +250,31 @@ namespace SpeechToText
         ja_JP,
         zh_HK,
         zh,
+    }
+
+    [Serializable]
+    public class SpeechRecognitionResult
+    {
+        public SpeechRecognitionAlternative[] alternatives;
+        public int channelTag;
+        public string languageCode;
+    }
+
+    [Serializable]
+    public class SpeechRecognitionAlternative
+    {
+        public string transcript;
+        public float confidence;
+        public WordInfo[] words;
+    }
+
+    [Serializable]
+    public class WordInfo
+    {
+        public string startTime;
+        public string endTime;
+        public string word;
+        public float confidence;
+        public int speakerTag;
     }
 }

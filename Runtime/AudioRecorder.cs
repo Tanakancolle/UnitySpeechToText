@@ -20,7 +20,11 @@ namespace SpeechToText
             _recodingClipData = new float[RecordingClip.samples * RecordingClip.channels];
 
             Debug.Log("Record Start");
-            Recording();
+
+            if (_isRecording)
+            {
+                Recording();
+            }
         }
 
         private async void Recording()
