@@ -21,7 +21,7 @@ namespace SpeechToText
 
             Debug.Log("Record Start");
 
-            if (_isRecording)
+            if (_isRecording == false)
             {
                 Recording();
             }

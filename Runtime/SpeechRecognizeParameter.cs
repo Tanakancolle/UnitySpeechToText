@@ -252,6 +252,11 @@ namespace SpeechToText
         zh,
     }
 
+    public class SpeechRecognitionResultParameter
+    {
+        public SpeechRecognitionResult[] results;
+    }
+
     [Serializable]
     public class SpeechRecognitionResult
     {

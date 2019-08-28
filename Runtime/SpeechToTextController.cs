@@ -38,7 +38,7 @@ namespace SpeechToText
 
         public AudioClip CurrentRecordClip { get; private set; }
 
-        public event Action<SpeechRecognitionResult> OnApiResult;
+        public event Action<SpeechRecognitionResultParameter> OnRecognitionResult;
 
         private void Awake()
         {
@@ -112,8 +112,8 @@ namespace SpeechToText
 
             Debug.Log("Result : " + request.downloadHandler.text);
 
-            var result = JsonUtility.FromJson<SpeechRecognitionResult>(request.downloadHandler.text);
-            OnApiResult?.Invoke(result);
+            var result = JsonUtility.FromJson<SpeechRecognitionResultParameter>(request.downloadHandler.text);
+            OnRecognitionResult?.Invoke(result);
         }
     }
 }
